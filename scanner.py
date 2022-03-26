@@ -6,11 +6,12 @@ class BarcodeScanner(Thread):
         super().setDaemon(True)
         self.ser = serial.Serial('/dev/ttyUSB0', 9600, 8, 'N', 1,timeout=0.1)
         self.patient_id = ''
+        self.win = win
 
     def run(self):
         while True:
             output = self.ser.readline()[:-2].decode("utf-8")
-            if output != "" and patient_id == "":
+            if output != "" and self.patient_id == "":
                 self.patient_id = output
                 self.win.event_generate("<<start_logic>>")
     

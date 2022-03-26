@@ -13,10 +13,20 @@ text_data = {
                 "Was there ambulance service available?", 
                 "Was the facility clean?" 
                 ],
+            "welcome":"Welcome! Scan card to start survey!",
             "muted":"Muted",
             "unmuted":"Unmuted",
             "extra_help":"Extra help?",
             },
+            "questions_voice":
+            [
+                "recordings/en/q1.mp3",
+                "recordings/en/q2.mp3",
+                "recordings/en/q3.mp3",
+                "recordings/en/q4.mp3",
+                "recordings/en/q5.mp3",
+                "recordings/en/q6.mp3",
+            ]
         'nl':
         {
             "display":"Taal: Nederlands",
@@ -31,6 +41,16 @@ text_data = {
                 "Is er een ambulancedienst beschikbaar bij deze faciliteit?",
                 "Hoe tevreden bent u over de hygiëne van de faciliteit?"
                 ],
+            "questions_voice":
+            [
+                "recordings/nl/q1.mp3",
+                "recordings/nl/q2.mp3",
+                "recordings/nl/q3.mp3",
+                "recordings/nl/q4.mp3",
+                "recordings/nl/q5.mp3",
+                "recordings/nl/q6.mp3",
+            ]
+            "welcome":"Welcome! Scan card to start survey!",
             "muted": "Gedempt",
             "unmuted":"Dempen opheffen",
             "extra_help":"Extra help?",

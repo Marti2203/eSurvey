@@ -23,6 +23,7 @@ scanner.start()
 # Setup question state
 current_q = 0
 q_text = StringVar()
+q_text.set(get_translated_field("welcome"))
 
 mute = BooleanVar()
 mute.set(False)
@@ -42,6 +43,8 @@ succ_text = StringVar()
 survey_data = {"facility_id": facility_id}
 def on_base_survey_success():
     q_text.set(get_translated_field("extra_help"))
+    Speaker(get_translated_field("questions_voice")[-1]).play()
+
     global buttons
     for button in buttons:
         button.destroy()
@@ -118,9 +121,11 @@ def start(*args):
     global survey_data
     survey_data["id"]= scanner.get_patient_id()
     succ_text.set("")
-    # Render buttons
-    q_text.set(get_translated_field('questions')[0])
     mute.set(False)
+    # Render buttons
+    
+    present_next_question()
+    
     for grading in range(gradings):
         text = str(grading)
         but = Button(win, text=emojis[grading],font=emoji_font, command = (lambda t: (lambda : rating_button_pressed(t)))(text), height=2,width=5,bg=color_gradient[grading])
@@ -130,7 +135,6 @@ def start(*args):
 # Create exit button
 quit_button=Button(win, textvariable=quit_button_text, font=font,command=win.destroy)
 quit_button.place(relx=0.8, rely=0.8, anchor=CENTER)
-
 
 # Create back button
 back_button=Button(win, textvariable=back_button_text, font=font, command=back_button_pressed)
