@@ -17,7 +17,6 @@ text_data = {
             "muted":"Muted",
             "unmuted":"Unmuted",
             "extra_help":"Extra help?",
-            },
             "questions_voice":
             [
                 "recordings/en/q1.mp3",
@@ -27,6 +26,7 @@ text_data = {
                 "recordings/en/q5.mp3",
                 "recordings/en/q6.mp3",
             ]
+            },  
         'nl':
         {
             "display":"Taal: Nederlands",
@@ -49,7 +49,7 @@ text_data = {
                 "recordings/nl/q4.mp3",
                 "recordings/nl/q5.mp3",
                 "recordings/nl/q6.mp3",
-            ]
+            ],
             "welcome":"Welcome! Scan card to start survey!",
             "muted": "Gedempt",
             "unmuted":"Dempen opheffen",
@@ -57,11 +57,18 @@ text_data = {
             }
         }
 
-def get_translated_field(word):
-    return text_data[languages[current_lang]][word]
-
-def change_lang():
-    current_lang = (current_lang + 1) % len(languages)
 
 languages = list(text_data.keys())
-current_lang = languages.index("en")
+
+class TranslationService:
+    def __init__(self):
+        self.current_lang = languages.index("en")
+
+    def get_translated_field(self,word):
+        return text_data[languages[self.current_lang]][word]
+
+    def change_lang(self):
+        self.current_lang = (self.current_lang + 1) % len(languages)
+
+
+

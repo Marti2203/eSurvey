@@ -3,10 +3,14 @@
 from tkinter import *
 import requests
 from PIL import ImageTk,Image  
-from translation_data import text_data, get_translated_field, languages,change_lang
+from translation_data import TranslationService
 from scanner import BarcodeScanner
 from speaker import Speaker
 from config import *
+
+translator = TranslationService()
+get_translated_field = translator.get_translated_field
+change_lang = translator.change_lang
 
 facility_id = "1"
 
@@ -43,7 +47,7 @@ succ_text = StringVar()
 survey_data = {"facility_id": facility_id}
 def on_base_survey_success():
     q_text.set(get_translated_field("extra_help"))
-    Speaker(get_translated_field("questions_voice")[-1]).play()
+    Speaker(get_translated_field("questions_voice")[-1]).start()
 
     global buttons
     for button in buttons:
@@ -133,8 +137,8 @@ def start(*args):
         buttons.append(but)
 
 # Create exit button
-quit_button=Button(win, textvariable=quit_button_text, font=font,command=win.destroy)
-quit_button.place(relx=0.8, rely=0.8, anchor=CENTER)
+#quit_button=Button(win, textvariable=quit_button_text, font=font,command=win.destroy)
+#quit_button.place(relx=0.8, rely=0.8, anchor=CENTER)
 
 # Create back button
 back_button=Button(win, textvariable=back_button_text, font=font, command=back_button_pressed)
