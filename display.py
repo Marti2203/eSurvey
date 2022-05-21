@@ -1,6 +1,7 @@
 #!/bin/python3
 #import the library
 from tkinter import *
+from database import insert_survey
 import requests
 from PIL import ImageTk,Image  
 from translation_data import TranslationService
@@ -44,8 +45,12 @@ mute_text.set(get_translated_field('unmuted'))
 
 succ_text = StringVar()
 
-survey_data = {"facility_id": facility_id}
+# keeping the data in a list which can be converted to a tuple later
+# order of the data is the same as the one in the database file
+survey_data_default = [facility_id,"0",1,1,1,1,1,1,False]
+survey_data = [facility_id,"0",1,1,1,1,1,1,False]
 def on_base_survey_success():
+    global survey_data
     q_text.set(get_translated_field("extra_help"))
     Speaker(get_translated_field("questions_voice")[-1]).start()
 
@@ -62,10 +67,15 @@ def on_base_survey_success():
             ]
 
 def extra_help_button_pressed(result):
-    survey_data['extra_information'] = result
+    global survey_data
+    survey_data[-1] = result
     q_text.set("")
     succ_text.set(get_translated_field("success_survey"))
     print(survey_data)
+    
+    insert_survey(survey_data)
+
+    survey_data = survey_data_default
     #requests.post("http://192.168.63.75:5000/",data=survey_data)
     global buttons
     for button in buttons:
@@ -73,7 +83,7 @@ def extra_help_button_pressed(result):
     buttons = []
 
 def add_rating(question,value):
-    survey_data[question] = value
+    survey_data[2 + question] = value
     print(f"{question} -> {value}")
 
 def present_next_question():
@@ -123,7 +133,7 @@ def back_button_pressed():
 
 def start(*args):
     global survey_data
-    survey_data["id"]= scanner.get_patient_id()
+    survey_data[1] = scanner.get_patient_id()
     succ_text.set("")
     mute.set(False)
     # Render buttons
@@ -132,7 +142,7 @@ def start(*args):
     
     for grading in range(gradings):
         text = str(grading)
-        but = Button(win, text=emojis[grading],font=emoji_font, command = (lambda t: (lambda : rating_button_pressed(t)))(text), height=2,width=5,bg=color_gradient[grading])
+        but = Button(win, text=emojis[grading],font=emoji_font, command = (lambda t: (lambda : rating_button_pressed(t)))(grading+1), height=2,width=5,bg=color_gradient[grading])
         but.place(relx = 0.15 + 0.9 / gradings * (grading), rely=0.6, anchor=CENTER)
         buttons.append(but)
 
